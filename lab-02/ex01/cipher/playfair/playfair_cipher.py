@@ -47,8 +47,6 @@ class PlayFairCipher:
     def playfair_decrypt(self, cipher_text, matrix):
         cipher_text = cipher_text.upper()
         decrypted_text = ""
-        decrypted_text1 = ""
-        
         for i in range(0, len(cipher_text), 2):
             pair = cipher_text[i:i+2]
             
@@ -60,16 +58,4 @@ class PlayFairCipher:
                 decrypted_text += matrix[(row1 - 1)%5][col1] + matrix[(row2-1)%5][col2]
             else:
                 decrypted_text += matrix[row1][col2] + matrix[row2][col1]
-        banro = ''
-        for i in range(0, len(decrypted_text)-2, 2):
-            if decrypted_text[i] == decrypted_text[i+2]:
-                banro += decrypted_text[i]
-            else:
-                banro += decrypted_text[i] + "" + decrypted_text[i+1]
-                
-        if decrypted_text[-1] == "X":
-            banro += decrypted_text[-2]
-        else:
-            banro += decrypted_text[-2]
-            banro += decrypted_text[-1]
-        return banro 
+        return decrypted_text
