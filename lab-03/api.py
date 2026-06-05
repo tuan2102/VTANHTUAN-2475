@@ -14,8 +14,8 @@ def rsa_generate_keys():
 @app.route("/api/rsa/encrypt", methods=['POST'])
 def rsa_encrypt():
     data = request.json
-    message = data['message']
-    key_type = data['key_type']
+    message = data.get('message') or data.get('plain_text') or ''
+    key_type = data.get('key_type', 'public')
     private_key, public_key= rsa_cipher.load_keys ()
     if key_type == 'public':
         key =public_key
@@ -32,8 +32,8 @@ def rsa_encrypt():
 @app.route("/api/rsa/decrypt", methods=['POST'])
 def rsa_decrypt():
     data=request.json
-    ciphertext_hex=data['ciphertext']
-    key_type=data['key_type']
+    ciphertext_hex=data.get('ciphertext') or data.get('cipher_text') or ''
+    key_type=data.get('key_type', 'private')
     private_key, public_key=rsa_cipher.load_keys()
     if key_type=='public':
         key=public_key
@@ -47,7 +47,7 @@ def rsa_decrypt():
 @app.route('/api/rsa/sign', methods=['POST'])
 def rsa_sign_message():
     data=request.json
-    message=data['message']
+    message=data.get('message') or data.get('plain_text') or ''
     private_key,_= rsa_cipher.load_keys()
     signature=rsa_cipher.sign(message, private_key)
     signature_hex=signature.hex()
@@ -56,10 +56,13 @@ def rsa_sign_message():
 @app.route('/api/rsa/verify', methods=['POST'])
 def rsa_verify_signature(): 
     data=request.json
-    message=data['message']
-    signature_hex=data['signature']
+    message=data.get('message') or data.get('plain_text') or ''
+    signature_hex=data.get('signature') or ''
     public_key,_=rsa_cipher.load_keys()
-    signature =bytes.fromhex(signature_hex)
+    try:
+        signature =bytes.fromhex(signature_hex)
+    except ValueError:
+        return jsonify({'is_verified': False})
     is_verified=rsa_cipher.verify(message, signature, public_key)
     return jsonify({'is_verified': is_verified})
 
@@ -73,7 +76,7 @@ def ecc_generate_keys():
 @app.route('/api/ecc/sign', methods=['POST'])
 def ecc_sign_message():
     data = request.json
-    message = data['message']
+    message = data.get('message') or data.get('plain_text') or ''
     private_key, _ = ecc_cipher.load_keys()
     signature = ecc_cipher.sign(message, private_key)
     signature_hex = signature.hex()
@@ -82,10 +85,13 @@ def ecc_sign_message():
 @app.route('/api/ecc/verify', methods=['POST'])
 def ecc_verify_signature():
     data = request.json
-    message = data['message']
-    signature_hex = data['signature']
+    message = data.get('message') or data.get('plain_text') or ''
+    signature_hex = data.get('signature') or ''
     public_key, _ = ecc_cipher.load_keys ()
-    signature = bytes.fromhex (signature_hex)
+    try:
+        signature = bytes.fromhex (signature_hex)
+    except ValueError:
+        return jsonify({'is_verified': False})
     is_verified = ecc_cipher.verify (message, signature, public_key)
     return jsonify({'is_verified': is_verified})
 

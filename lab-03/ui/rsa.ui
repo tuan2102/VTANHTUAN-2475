@@ -80,7 +80,7 @@
      <string>Cipher Text</string>
     </property>
    </widget>
-   <widget class="QPlainTextEdit" name="txtinfomation">
+   <widget class="QPlainTextEdit" name="txtsign">
     <property name="geometry">
      <rect>
       <x>570</x>
@@ -93,20 +93,20 @@
    <widget class="QLabel" name="label_4">
     <property name="geometry">
      <rect>
-      <x>490</x>
+      <x>530</x>
       <y>120</y>
-      <width>71</width>
+      <width>21</width>
       <height>16</height>
      </rect>
     </property>
     <property name="text">
-     <string>Infomation</string>
+     <string>Sign</string>
     </property>
    </widget>
-   <widget class="QPlainTextEdit" name="txtsign">
+   <widget class="QPlainTextEdit" name="txtverify">
     <property name="geometry">
      <rect>
-      <x>580</x>
+      <x>570</x>
       <y>280</y>
       <width>341</width>
       <height>101</height>
@@ -116,14 +116,14 @@
    <widget class="QLabel" name="label_5">
     <property name="geometry">
      <rect>
-      <x>500</x>
+      <x>530</x>
       <y>280</y>
-      <width>71</width>
+      <width>31</width>
       <height>16</height>
      </rect>
     </property>
     <property name="text">
-     <string>SIgnature</string>
+     <string>Verify</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btnen">
@@ -152,7 +152,7 @@
      <string>decrypt</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btninfo">
+   <widget class="QPushButton" name="btnverify">
     <property name="geometry">
      <rect>
       <x>570</x>
@@ -162,7 +162,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>information</string>
+     <string>sign</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btnsign">
@@ -175,7 +175,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>signature</string>
+     <string>verify</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btngenerate">
@@ -198,7 +198,7 @@
      <x>0</x>
      <y>0</y>
      <width>1016</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
