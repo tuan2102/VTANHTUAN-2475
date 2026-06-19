@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diffie-Hellman-AES Secure Socket Chat - Simulation Dashboard</title>
+    <meta name="description" content="Standalone secure chat web application simulating Diffie-Hellman-AES TCP socket protocol and shared secret derivation.">
+    <!-- Google Fonts: Outfit and Fira Code for terminals -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="app-header">
+        <div class="logo-container">
+            <i class="fa-solid fa-arrows-left-right app-logo-icon"></i>
+            <div class="header-text">
+                <h1 id="app-title-h1">Diffie-Hellman-AES Chat</h1>
+                <p class="app-subtitle">Secure Socket Communication Simulator (Port 12346)</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="app-main-content">
+        <!-- Error Toast Notification -->
+        <div id="toast-notification" class="toast-hidden">
+            <i class="fa-solid fa-triangle-exclamation toast-icon"></i>
+            <span id="toast-message">Error Message</span>
+        </div>
+
+        <div class="dashboard-grid">
+            <!-- Server Control Panel -->
+            <div class="panel glass-card server-panel">
+                <div class="panel-header">
+                    <h2><i class="fa-solid fa-server header-icon"></i> DH-AES TCP Server</h2>
+                    <div class="status-indicator inactive" id="server-status">
+                        <span class="status-dot"></span> <span class="status-label">OFFLINE</span>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="server-controls">
+                        <button class="btn btn-success" id="btn-start" onclick="startServer()">
+                            <i class="fa-solid fa-play"></i> Start Server (Port 12346)
+                        </button>
+                        <button class="btn btn-danger" id="btn-stop" onclick="stopServer()" disabled>
+                            <i class="fa-solid fa-stop"></i> Stop Server
+                        </button>
+                    </div>
+                    <div class="console-wrapper">
+                        <div class="console-header">
+                            <span><i class="fa-solid fa-terminal"></i> Server Console Log</span>
+                            <button class="btn-clear" onclick="clearConsole()"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
+                        <div class="console-body terminal-text" id="console">
+                            [00:00:00] Server is currently idle. Click Start Server to initialize DH parameters and bind socket.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Client Control Panel -->
+            <div class="panel glass-card client-manager-panel">
+                <div class="panel-header">
+                    <h2><i class="fa-solid fa-users header-icon"></i> Active Sockets Client Hub</h2>
+                    <button class="btn btn-primary" id="btn-add-client" onclick="showAddClientModal()">
+                        <i class="fa-solid fa-user-plus"></i> Connect Web Client
+                    </button>
+                </div>
+                <div class="panel-body flex-column">
+                    <div class="connected-clients-list" id="client-list">
+                        <p class="empty-list-msg">No clients connected. Set up a client to start chatting.</p>
+                    </div>
+                    <div class="client-workspace" id="workspace">
+                        <!-- Dynamic active client panels generated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal for adding clients -->
+    <div id="add-client-modal" class="modal-overlay">
+        <div class="modal-card glass-card">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-user-plus text-accent"></i> Connect New TCP Client</h3>
+                <button class="btn-modal-close" onclick="hideAddClientModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="input-client-name">Enter Client Display Name:</label>
+                    <input type="text" id="input-client-name" placeholder="e.g. Alice, Bob, Charlie" autocomplete="off">
+                </div>
+                <div class="modal-info-box">
+                    <p><i class="fa-solid fa-circle-info text-accent"></i> Connecting this client spawns a background thread running a TCP socket client, performing a Diffie-Hellman key exchange to derive a shared AES session key.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="hideAddClientModal()">Cancel</button>
+                <button class="btn btn-primary" id="btn-modal-submit" onclick="submitAddClient()">Connect Socket</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SocketIO Client Library -->
+    <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"></script>
+    <!-- Custom Application Javascript -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
