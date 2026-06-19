@@ -1,0 +1,6 @@
+@echo off
+echo Installing dependencies for AES-RSA Socket Web App...
+pip install -r requirements.txt
+echo Starting AES-RSA Socket Web Application...
+python app.py
+pause

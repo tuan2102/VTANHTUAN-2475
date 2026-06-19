@@ -1,0 +1,6 @@
+@echo off
+echo Installing dependencies for Diffie-Hellman-AES Socket Web App...
+pip install -r requirements.txt
+echo Starting DH-AES Socket Web Application...
+python app.py
+pause
